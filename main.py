@@ -60,3 +60,6 @@ def place_piece(cube, piece, face):
     for i in range(5):
         for j in range(5):
             cube[face][i][j] = piece[i][j]
+
+def edges_connect(edge1, edge2):
+    return all(a != b for a, b in zip(edge1, edge2))
