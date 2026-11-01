@@ -52,3 +52,8 @@ pieces = {
 
 def rotate(matrix):
     return [list(row) for row in zip(*matrix[::-1])]
+
+def place_piece(cube, piece, face):
+    for i in range(5):
+        for j in range(5):
+            cube[face][i][j] = piece[i][j]
