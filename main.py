@@ -53,6 +53,9 @@ pieces = {
 def rotate(matrix):
     return [list(row) for row in zip(*matrix[::-1])]
 
+def flip(matrix):
+    return [row[::-1] for row in matrix]
+
 def place_piece(cube, piece, face):
     for i in range(5):
         for j in range(5):
