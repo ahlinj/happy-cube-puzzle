@@ -178,8 +178,18 @@ def breadth_first_search(pieces):
 
     return None
 
+def depth_first_search(cube, pieces, used_pieces):
+    if len(used_pieces) == 6:
+        return cube
+    
+    for child_cube, child_used_pieces in get_children(cube, pieces, used_pieces):
+        solution = depth_first_search(child_cube, pieces, child_used_pieces)
+        if solution is not None:
+            return solution
+    return None
+    
 def main():
-    solution = breadth_first_search(pieces["pink"])
+    solution = depth_first_search(create_cube(), pieces["yellow"], [])
 
     if solution:
         print("Solution found!")
