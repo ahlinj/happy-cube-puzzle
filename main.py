@@ -64,15 +64,53 @@ def place_piece(cube, piece, face):
         for j in range(5):
             cube[face][i][j] = piece[i][j]
 
+def get_edges(piece):
+    return {
+        "top": piece[0],
+        "bottom": piece[4],
+        "left": [row[0] for row in piece],
+        "right": [row[4] for row in piece]
+    }
+
 def edges_connect(edge1, edge2):
     return all(a != b for a, b in zip(edge1, edge2))
 
-def can_place_piece(cube, face):
-    return all(
-        cell == 0
-        for row in cube[face]
-        for cell in row
-    )
+def can_place_piece(cube, piece, face):
+    if not all(cell == 0 for row in cube[face] for cell in row): 
+        return False
+
+    piece_edges = get_edges(piece)
+    match face:
+        case "front":
+            return True
+        
+        case "left":
+            return edges_connect(get_edges(cube["front"])["left"],piece_edges["right"])
+
+        case "right":
+            return edges_connect(get_edges(cube["front"])["right"], piece_edges["left"])
+
+        case "top":
+            return (edges_connect(get_edges(cube["front"])["top"],piece_edges["bottom"]) and 
+                    edges_connect(get_edges(cube["left"])["top"],piece_edges["left"]) and 
+                    edges_connect(get_edges(cube["right"])["top"],piece_edges["right"])
+            )
+
+        case "bottom":
+            return (edges_connect(get_edges(cube["front"])["bottom"],piece_edges["top"]) and
+                    edges_connect(get_edges(cube["left"])["bottom"],piece_edges["left"]) and
+                    edges_connect(get_edges(cube["right"])["bottom"],piece_edges["right"])
+            )
+
+        case "back":
+            return (edges_connect(get_edges(cube["top"])["top"],piece_edges["top"]) and
+                    edges_connect(get_edges(cube["bottom"])["bottom"],piece_edges["bottom"]) and
+                    edges_connect(get_edges(cube["left"])["left"],piece_edges["right"]) and
+                    edges_connect(get_edges(cube["right"])["right"],piece_edges["left"])
+            )
+
+        case _:
+            return False
 
 def get_children(cube, pieces, used_pieces):
     children = []
@@ -88,7 +126,7 @@ def get_children(cube, pieces, used_pieces):
             for face, matrix in cube.items()
         }
 
-        if can_place_piece(new_cube, next_face):
+        if can_place_piece(new_cube, piece, next_face):
             place_piece(new_cube, piece, next_face)
             new_used_pieces = used_pieces + [piece_index]
             children.append((new_cube, new_used_pieces))
