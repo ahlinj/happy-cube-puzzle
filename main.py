@@ -1,10 +1,13 @@
-cube = {
-    "front":  [[0] * 5 for _ in range(5)],
-    "back":   [[0] * 5 for _ in range(5)],
-    "left":   [[0] * 5 for _ in range(5)],
-    "right":  [[0] * 5 for _ in range(5)],
-    "top":    [[0] * 5 for _ in range(5)],
-    "bottom": [[0] * 5 for _ in range(5)]
+FACES = ["front", "left", "right", "top", "bottom", "back"]
+
+def create_cube():
+    return {
+        FACES[0]:  [[0] * 5 for _ in range(5)],
+        FACES[1]:  [[0] * 5 for _ in range(5)],
+        FACES[2]:  [[0] * 5 for _ in range(5)],
+        FACES[3]:  [[0] * 5 for _ in range(5)],
+        FACES[4]:  [[0] * 5 for _ in range(5)],
+        FACES[5]:  [[0] * 5 for _ in range(5)]
 }
 
 pink_1 = [[0,1,0,1,0],[0,1,1,1,0],[1,1,1,1,0],[0,1,1,1,1],[1,1,0,1,1]]
@@ -63,3 +66,63 @@ def place_piece(cube, piece, face):
 
 def edges_connect(edge1, edge2):
     return all(a != b for a, b in zip(edge1, edge2))
+
+def can_place_piece(cube, face):
+    return all(
+        cell == 0
+        for row in cube[face]
+        for cell in row
+    )
+
+def get_children(cube, pieces, used_pieces):
+    children = []
+
+    next_face = FACES[len(used_pieces)]
+
+    for piece_index, piece in enumerate(pieces):
+        if piece_index in used_pieces:
+            continue
+
+        new_cube = {
+            face: [row[:] for row in matrix]
+            for face, matrix in cube.items()
+        }
+
+        if can_place_piece(new_cube, next_face):
+            place_piece(new_cube, piece, next_face)
+            new_used_pieces = used_pieces + [piece_index]
+            children.append((new_cube, new_used_pieces))
+
+    return children
+
+def breadth_first_search(pieces):
+    queue = [(create_cube(), [])]
+
+    while queue:
+        cube, used_pieces = queue.pop(0)
+
+        if len(used_pieces) == 6:
+            return cube
+
+        children = get_children(cube, pieces, used_pieces)
+
+        for child in children:
+            queue.append(child)
+
+    return None
+
+def main():
+    solution = breadth_first_search(pieces["pink"])
+
+    if solution:
+        print("Solution found!")
+
+        for face in FACES:
+            print(face)
+            for row in solution[face]:
+                print(row)
+    else:
+        print("No solution found.")
+
+if __name__ == "__main__":
+    main()
