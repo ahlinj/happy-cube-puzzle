@@ -49,3 +49,6 @@ pieces = {
     "yellow": [yellow_1, yellow_2, yellow_3, yellow_4, yellow_5, yellow_6],
     "blue": [blue_1, blue_2, blue_3, blue_4, blue_5, blue_6]
 }
+
+def rotate(matrix):
+    return [list(row) for row in zip(*matrix[::-1])]
