@@ -187,9 +187,21 @@ def depth_first_search(cube, pieces, used_pieces):
         if solution is not None:
             return solution
     return None
+
+def depth_first_limited(cube, pieces, used_pieces, limit):
+    if len(used_pieces) == 6:
+        return cube
+    if limit == 0:
+        return None
+    
+    for child_cube, child_used_pieces in get_children(cube, pieces, used_pieces):
+        solution = depth_first_limited(child_cube, pieces, child_used_pieces, limit - 1)
+        if solution is not None:
+            return solution
+    return None
     
 def main():
-    solution = depth_first_search(create_cube(), pieces["yellow"], [])
+    solution = depth_first_limited(create_cube(), pieces["yellow"], [], 6)
 
     if solution:
         print("Solution found!")
