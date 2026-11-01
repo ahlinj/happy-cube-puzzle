@@ -41,3 +41,11 @@ blue_3 = [[0,1,0,1,1],[0,1,1,1,1],[1,1,1,1,0],[0,1,1,1,1],[0,1,0,1,0]]
 blue_4 = [[0,0,1,0,0],[0,1,1,1,0],[1,1,1,1,1],[0,1,1,1,0],[0,0,1,0,0]]
 blue_5 = [[1,0,1,0,1],[1,1,1,1,1],[0,1,1,1,0],[1,1,1,1,1],[1,0,1,0,1]]
 blue_6 = [[0,0,1,0,0],[0,1,1,1,1],[1,1,1,1,0],[0,1,1,1,1],[0,0,1,0,0]]
+
+pieces = {
+    "pink": [pink_1, pink_2, pink_3, pink_4, pink_5, pink_6],
+    "orange": [orange_1, orange_2, orange_3, orange_4, orange_5, orange_6],
+    "green": [green_1, green_2, green_3, green_4, green_5, green_6],
+    "yellow": [yellow_1, yellow_2, yellow_3, yellow_4, yellow_5, yellow_6],
+    "blue": [blue_1, blue_2, blue_3, blue_4, blue_5, blue_6]
+}
