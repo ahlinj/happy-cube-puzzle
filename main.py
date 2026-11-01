@@ -112,6 +112,23 @@ def can_place_piece(cube, piece, face):
         case _:
             return False
 
+def get_orientations(piece):
+    orientations = []
+
+    current = piece
+
+    for _ in range(4):
+        orientations.append(current)
+        current = rotate(current)
+
+    current = flip(piece)
+
+    for _ in range(4):
+        orientations.append(current)
+        current = rotate(current)
+
+    return orientations
+
 def get_children(cube, pieces, used_pieces):
     children = []
 
@@ -121,15 +138,16 @@ def get_children(cube, pieces, used_pieces):
         if piece_index in used_pieces:
             continue
 
-        new_cube = {
-            face: [row[:] for row in matrix]
-            for face, matrix in cube.items()
-        }
+        for orientatied_piece in get_orientations(piece):
+            new_cube = {
+                face: [row[:] for row in matrix]
+                for face, matrix in cube.items()
+            }
 
-        if can_place_piece(new_cube, piece, next_face):
-            place_piece(new_cube, piece, next_face)
-            new_used_pieces = used_pieces + [piece_index]
-            children.append((new_cube, new_used_pieces))
+            if can_place_piece(new_cube, orientatied_piece, next_face):
+                place_piece(new_cube, orientatied_piece, next_face)
+                new_used_pieces = used_pieces + [piece_index]
+                children.append((new_cube, new_used_pieces))
 
     return children
 
