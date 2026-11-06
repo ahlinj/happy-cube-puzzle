@@ -209,14 +209,14 @@ def depth_first_search(cube, pieces, used_pieces):
             return solution
     return None
 
-def depth_first_search(cube, pieces, used_pieces):
+def depth_first_search_count(cube, pieces, used_pieces):
     if len(used_pieces) == 6:
         return 1
 
     solution_count = 0
 
     for child_cube, child_used_pieces in get_children(cube, pieces, used_pieces):
-        solution_count += depth_first_search(
+        solution_count += depth_first_search_count(
             child_cube, pieces, child_used_pieces
         )
 
@@ -251,23 +251,23 @@ def main():
     '''
     #yellow
     print(f"Total number of solutions BFS (yellow): {breadth_first_search_count(pieces['yellow'])}")
-    print("Total number of solutions DFS: (yellow)", depth_first_search(create_cube(), pieces["yellow"], []))
+    print("Total number of solutions DFS: (yellow)", depth_first_search_count(create_cube(), pieces["yellow"], []))
 
     #green
     print(f"Total number of solutions BFS (green): {breadth_first_search_count(pieces['green'])}")
-    print("Total number of solutions DFS: (green)", depth_first_search(create_cube(), pieces["green"],[]))
+    print("Total number of solutions DFS: (green)", depth_first_search_count(create_cube(), pieces["green"],[]))
 
     #blue
     print(f"Total number of solutions BFS (blue): {breadth_first_search_count(pieces['blue'])}")
-    print("Total number of solutions DFS: (blue)", depth_first_search(create_cube(), pieces["blue"],[]))
+    print("Total number of solutions DFS: (blue)", depth_first_search_count(create_cube(), pieces["blue"],[]))
 
     #orange
     print(f"Total number of solutions BFS (orange): {breadth_first_search_count(pieces['orange'])}")
-    print("Total number of solutions DFS: (orange)", depth_first_search(create_cube(), pieces["orange"],[]))
+    print("Total number of solutions DFS: (orange)", depth_first_search_count(create_cube(), pieces["orange"],[]))
 
     #pink
     print(f"Total number of solutions BFS (pink): {breadth_first_search_count(pieces['pink'])}")
-    print("Total number of solutions DFS: (pink)", depth_first_search(create_cube(), pieces["pink"],[]))
+    print("Total number of solutions DFS: (pink)", depth_first_search_count(create_cube(), pieces["pink"],[]))
 
 if __name__ == "__main__":
     main()
