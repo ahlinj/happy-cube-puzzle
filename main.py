@@ -125,17 +125,20 @@ def can_place_piece(cube, piece, face):
 
 def get_orientations(piece):
     orientations = []
-
     current = piece
 
     for _ in range(4):
-        orientations.append(current)
+        if current not in orientations:
+            orientations.append(current)
+
         current = rotate(current)
 
     current = flip(piece)
 
     for _ in range(4):
-        orientations.append(current)
+        if current not in orientations:
+            orientations.append(current)
+
         current = rotate(current)
 
     return orientations
