@@ -96,22 +96,22 @@ def can_place_piece(cube, piece, face):
         case "top":
             return (edges_connect(get_edges(cube["front"])["top"],piece_edges["bottom"]) and 
                     edges_connect(get_edges(cube["left"])["top"],piece_edges["left"]) and 
-                    edges_connect(get_edges(cube["right"])["top"],piece_edges["right"]) and
+                    edges_connect(get_edges(cube["right"])["top"][::-1],piece_edges["right"]) and
                     corner_connects(cube["front"][0][0], cube["left"][0][4], piece[4][0]) and
                     corner_connects(cube["front"][0][4], cube["right"][0][0], piece[4][4])
             )
 
         case "bottom":
             return (edges_connect(get_edges(cube["front"])["bottom"],piece_edges["top"]) and
-                    edges_connect(get_edges(cube["left"])["bottom"],piece_edges["left"]) and
+                    edges_connect(get_edges(cube["left"])["bottom"][::-1],piece_edges["left"]) and
                     edges_connect(get_edges(cube["right"])["bottom"],piece_edges["right"]) and
                     corner_connects(cube["front"][4][0], cube["left"][4][4], piece[0][0]) and
                     corner_connects(cube["front"][4][4], cube["right"][4][0], piece[0][4])
             )
 
         case "back":
-            return (edges_connect(get_edges(cube["top"])["top"],piece_edges["top"]) and
-                    edges_connect(get_edges(cube["bottom"])["bottom"],piece_edges["bottom"]) and
+            return (edges_connect(get_edges(cube["top"])["top"][::-1],piece_edges["top"]) and
+                    edges_connect(get_edges(cube["bottom"])["bottom"][::-1],piece_edges["bottom"]) and
                     edges_connect(get_edges(cube["left"])["left"],piece_edges["right"]) and
                     edges_connect(get_edges(cube["right"])["right"],piece_edges["left"]) and
                     corner_connects(cube["top"][0][0], cube["left"][0][0], piece[0][4]) and
