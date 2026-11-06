@@ -234,22 +234,43 @@ def depth_first_limited(cube, pieces, used_pieces, limit):
             return solution
     return None
 
-def rotate_cube(cube):
+def rotate_cube(cube, axis):
     new_cube = create_cube()
 
-    new_cube["front"] = rotate(cube["front"])
-    new_cube["back"] = rotate(cube["back"])
+    match axis:
+        case "front_back":
+            new_cube["front"] = rotate(cube["front"])
+            new_cube["back"] = rotate(rotate(rotate(cube["back"])))
 
-    new_cube["right"] = rotate(cube["top"])
-    new_cube["bottom"] = rotate(cube["right"])
-    new_cube["left"] = rotate(cube["bottom"])
-    new_cube["top"] = rotate(cube["left"])
+            new_cube["right"] = rotate(cube["top"])
+            new_cube["bottom"] = rotate(cube["right"])
+            new_cube["left"] = rotate(cube["bottom"])
+            new_cube["top"] = rotate(cube["left"])
 
+        case "left_right":
+            new_cube["left"] = rotate(cube["left"])
+            new_cube["right"] = rotate(rotate(rotate(cube["right"])))
+
+            new_cube["bottom"] = cube["front"]
+            new_cube["back"] = rotate(rotate(cube["bottom"]))
+            new_cube["top"] = rotate(rotate(cube["back"]))
+            new_cube["front"] = cube["top"]
+
+        case "top_bottom":
+            new_cube["top"] = rotate(cube["top"])
+            new_cube["bottom"] = rotate(rotate(rotate(cube["bottom"])))
+
+            new_cube["front"] = cube["right"]
+            new_cube["left"] = cube["front"]
+            new_cube["back"] = cube["left"]
+            new_cube["right"] = cube["back"]
+
+        case _:
+            raise ValueError("Unknown rotation axis")
 
     return new_cube
 
 def main():
-    '''
     solution = depth_first_limited(create_cube(), pieces["yellow"], [], 6)
 
     if solution:
@@ -282,45 +303,6 @@ def main():
     print(f"Total number of solutions BFS (pink): {breadth_first_search_count(pieces['pink'])}")
     print("Total number of solutions DFS: (pink)", depth_first_search_count(create_cube(), pieces["pink"],[]))
 
-    '''
-
-    solution = depth_first_limited(create_cube(), pieces["yellow"], [], 6)
-
-    print("original solution:")
-    for face in FACES:
-        print(face)
-        for row in solution[face]:
-            print(row)
-
-    print("rotated solution:")
-    rotated_solution = rotate_cube(solution)
-
-    for face in FACES:
-        print(face)
-        for row in rotated_solution[face]:
-            print(row)
-
-    rotated_solution_twice = rotate_cube(rotated_solution)
-    print("rotated solution twice:")
-
-    for face in FACES:
-        print(face)
-        for row in rotated_solution_twice[face]:
-            print(row)
-
-    rotated_solution_thrice = rotate_cube(rotated_solution_twice)
-    print("rotated solution thrice:")
-    for face in FACES:
-        print(face)
-        for row in rotated_solution_thrice[face]:
-            print(row)
-
-    rotated_solution_four_times = rotate_cube(rotated_solution_thrice)
-    print("rotated solution four times:")
-    for face in FACES:
-        print(face)
-        for row in rotated_solution_four_times[face]:
-            print(row)
 
 if __name__ == "__main__":
     main()
