@@ -296,37 +296,74 @@ def add_variations(seen, cube):
             current = rotate_cube(current, "front_back")
 
 def main():
-    solution = depth_first_limited(create_cube(), pieces["yellow"], [], 6)
+    print("\nSelect colors:")
+    print("[1] Pink  [2] Orange  [3] Green  [4] Yellow  [5] Blue")
 
-    if solution:
-        print("Solution found!")
+    choice = input("Choose color(s) (e.g. 1,3,4): ")
 
-        for face in FACES:
-            print(face)
-            for row in solution[face]:
-                print(row)
-    else:
-        print("No solution found.")
+    colors = list(pieces.keys())
+    selected_colors = [colors[int(x) - 1] for x in choice.split(",")]
 
-    #yellow
-    print(f"Total number of solutions BFS (yellow): {breadth_first_search_count(pieces['yellow'])}")
-    print("Total number of solutions DFS: (yellow)", depth_first_search_count(create_cube(), pieces["yellow"], [], set()))
+    selected_pieces = []
 
-    #green
-    print(f"Total number of solutions BFS (green): {breadth_first_search_count(pieces['green'])}")
-    print("Total number of solutions DFS: (green)", depth_first_search_count(create_cube(), pieces["green"],[], set()))
+    for color in selected_colors:
+        selected_pieces.extend(pieces[color])
 
-    #blue
-    print(f"Total number of solutions BFS (blue): {breadth_first_search_count(pieces['blue'])}")
-    print("Total number of solutions DFS: (blue)", depth_first_search_count(create_cube(), pieces["blue"],[], set()))
+    print("\nSelect algorithm:")
+    print("[1] BFS")
+    print("[2] DFS")
+    print("[3] Limited-DFS")
 
-    #orange
-    print(f"Total number of solutions BFS (orange): {breadth_first_search_count(pieces['orange'])}")
-    print("Total number of solutions DFS: (orange)", depth_first_search_count(create_cube(), pieces["orange"],[], set()))
+    algorithm = input("Choose algorithm: ")
 
-    #pink
-    print(f"Total number of solutions BFS (pink): {breadth_first_search_count(pieces['pink'])}")
-    print("Total number of solutions DFS: (pink)", depth_first_search_count(create_cube(), pieces["pink"],[], set()))
+    print("\nSelect operation:")
+    print("[1] Find first solution")
+    print("[2] Count all solutions")
+
+    operation = input("Choose operation: ")
+
+    print(f"\nSelected colors: {', '.join(selected_colors)}")
+
+    match operation:
+        case "1":
+            match algorithm:
+                case "1":
+                    solution = breadth_first_search(selected_pieces)
+                case "2":
+                    solution = depth_first_search(create_cube(), selected_pieces, [])
+                case "3":
+                    solution = depth_first_limited(create_cube(), selected_pieces, [], 6)
+                case _:
+                    print("Invalid algorithm.")
+                    return
+
+            if solution:
+                print("\nSolution found!")
+                for face in FACES:
+                    print(face)
+                    for row in solution[face]:
+                        print(row)
+            else:
+                print("\nNo solution found.")
+
+        case "2":
+            match algorithm:
+                case "1":
+                    count = breadth_first_search_count(selected_pieces)
+                case "2":
+                    count = depth_first_search_count(create_cube(), selected_pieces, [], set())
+                case "3":
+                    print("Counting is not available for Limited-DFS.")
+                    return
+                case _:
+                    print("Invalid algorithm.")
+                    return
+
+            print(f"\nTotal number of unique solutions: {count}")
+
+        case _:
+            print("Invalid operation.")
+
 
 
 if __name__ == "__main__":
