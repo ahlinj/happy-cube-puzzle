@@ -361,6 +361,7 @@ def main():
 
             print(f"\nTotal number of unique solutions: {count}")
 
+            input("\nPress Enter to exit...")
         case _:
             print("Invalid operation.")
 
